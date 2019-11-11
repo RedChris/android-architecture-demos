@@ -65,12 +65,9 @@ class MainActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     hasPermission = true
                     getWeatherForCurrentLocation()
-                } else {
-                    //boo
                 }
                 return
             }
         }
     }
-
 }
