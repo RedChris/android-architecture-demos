@@ -1,4 +1,4 @@
-package com.brandwidth.yetanothterweatherapp.data;
+package com.brandwidth.yetanothterweatherapp.data
 
 import com.squareup.moshi.JsonClass
 

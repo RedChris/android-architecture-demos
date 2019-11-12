@@ -1,12 +1,22 @@
 package com.brandwidth.yetanothterweatherapp.mvi
 
-interface MainView {
-    fun checkForLocationPermission(): Boolean
-    fun requestLatKnownLocation()
-    fun requestLocationPermission()
-    fun setLocationName(name: String)
-    fun setWeatherTitle(title: String)
-    fun setWeatherDescription(description: String)
-    fun setWindSpeed(speed: String)
-    fun setTemperature(temperature: String)
+import io.reactivex.Observable
+
+
+interface MainView : MviView {
+
+    fun pullToRefreshIntent(): Observable<MainAction.PullToRefresh>
+    fun currentPermissionStatusIntent(): Observable<MainAction.PermissionStatus>
+    fun permissionChangedIntent(): Observable<MainAction.PermissionChanged>
+    fun newLocationIntent(): Observable<MainAction.NewLocation>
+
+    fun render(state: MainViewState)
+
+}
+
+interface MainFragmentPresenter {
+
+    fun attachView(view: MainView)
+    fun detachView()
+
 }

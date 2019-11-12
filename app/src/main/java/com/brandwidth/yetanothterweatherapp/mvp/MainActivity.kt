@@ -80,4 +80,8 @@ class MainActivity : AppCompatActivity(), MainView {
         tempreture.text = temperature
     }
 
+    override fun setIsRefreshing(isRefreshing: Boolean) {
+        swiperefresh.isRefreshing = isRefreshing
+    }
+
 }

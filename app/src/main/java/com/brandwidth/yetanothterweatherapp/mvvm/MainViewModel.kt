@@ -19,6 +19,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
     val weatherDescription = MutableLiveData<String>()
     val windSpeed = MutableLiveData<String>()
     val temperature = MutableLiveData<String>()
+    val isRefreshing = MutableLiveData<Boolean>()
     val checkForLocationPermissionEvent = SingleLiveEvent<Unit>()
     val requestLocationPermissionEvent = SingleLiveEvent<Unit>()
     val requestLastKnownLocationEvent = SingleLiveEvent<Unit>()
@@ -42,11 +43,15 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
     }
 
     fun onUserWantsToRefresh() {
+        isRefreshing.value = true;
         requestLastKnownLocationEvent.call()
     }
 
     fun onNewLocationRetrieved(location: Location) {
-        weatherRepository.getWeatherForCurrentLocation(location) {setupData(it)}
+        weatherRepository.getWeatherForCurrentLocation(location) {
+            setupData(it)
+            isRefreshing.value = false
+        }
     }
 
     private fun setupData(cityWeather: CityWeather) {

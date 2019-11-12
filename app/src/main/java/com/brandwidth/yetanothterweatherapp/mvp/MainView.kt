@@ -9,4 +9,5 @@ interface MainView {
     fun setWeatherDescription(description: String)
     fun setWindSpeed(speed: String)
     fun setTemperature(temperature: String)
+    fun setIsRefreshing(isRefreshing: Boolean)
 }

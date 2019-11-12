@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 WeatherModel.getWeatherForCurrentLocation(location!!) {setData(it)}
+                if (swiperefresh.isRefreshing) {
+                    swiperefresh.isRefreshing = false
+                }
             }
     }
 

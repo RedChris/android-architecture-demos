@@ -34,6 +34,7 @@ class MainPresenter (private val mainView: MainView,
 
     fun onNewLocationRetrieved(location: Location) {
         weatherRespository.getWeatherForCurrentLocation(location) {setupData(it)}
+        mainView.setIsRefreshing(false)
     }
 
     private fun setupData(cityWeather: CityWeather) {

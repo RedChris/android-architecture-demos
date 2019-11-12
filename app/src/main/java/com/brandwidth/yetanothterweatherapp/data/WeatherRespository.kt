@@ -4,6 +4,8 @@ import android.location.Location
 import com.brandwidth.yetanothterweatherapp.Constants
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.IOException
@@ -27,11 +29,34 @@ class WeatherRespository  {
         })
     }
 
+    private val locationSource = BehaviorSubject.create<CityWeather>()
+
+    fun getWeatherForCurrentLocation(location: Location): Observable<CityWeather> {
+
+        val request = buildRequest(location)
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                parseResponse(response) {}
+            }
+
+        })
+        return locationSource
+
+    }
+
     private fun parseResponse(response: Response, callback: (CityWeather)-> Unit) {
         val adapter: JsonAdapter<CityWeather> = moshi.adapter(
             CityWeather::class.java)
         val cityWeather = adapter.fromJson(response.body!!.toString())
-        cityWeather?.let {callback(it)}
+
+        cityWeather?.let {
+            callback(it)
+            locationSource.onNext(cityWeather!!)
+        }
     }
 
     private fun buildRequest(location: Location) : Request {
